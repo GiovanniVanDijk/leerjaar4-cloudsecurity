@@ -41,7 +41,7 @@ resource "aws_internet_gateway" "saxit_gw" {
 # Create peering with db VPC
 resource "aws_vpc_peering_connection" "dbpeer" {
   vpc_id        = aws_vpc.saxit_vpc.id
-  peer_vpc_id   = aws_vpc.saxit_vpc_db.id # Dynamische referentie hersteld
+  peer_vpc_id   = aws_vpc.saxit_vpc_db.id 
   auto_accept   = true
 }
 ###################################################
@@ -63,7 +63,7 @@ resource "aws_route_table" "pres-route" {
 ###################################################
 # Create routing table for db VPC
 resource "aws_route" "dbroute" {
-  route_table_id         = aws_vpc.saxit_vpc_db.main_route_table_id # Dynamische referentie hersteld
+  route_table_id         = aws_vpc.saxit_vpc_db.main_route_table_id 
   destination_cidr_block = "10.0.0.0/16"
   gateway_id             = aws_vpc_peering_connection.dbpeer.id
 }
@@ -260,7 +260,12 @@ resource "aws_instance" "web01" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.saxit_subnet_presentation_1.id
   associate_public_ip_address = true
-  root_block_device { volume_type = "gp2", volume_size = 50 }
+  
+  root_block_device { 
+    volume_type = "gp2"
+    volume_size = 50 
+  }
+  
   vpc_security_group_ids = [aws_security_group.presentationtier_sg.id]
   user_data = <<-EOF
   #!/bin/bash
@@ -289,7 +294,12 @@ resource "aws_instance" "web02" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.saxit_subnet_presentation_2.id
   associate_public_ip_address = true
-  root_block_device { volume_type = "gp2", volume_size = 50 }
+  
+  root_block_device { 
+    volume_type = "gp2"
+    volume_size = 50 
+  }
+  
   vpc_security_group_ids = [aws_security_group.presentationtier_sg.id]
   user_data = <<-EOF
   #!/bin/bash
@@ -317,7 +327,12 @@ resource "aws_instance" "app01" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.saxit_subnet_appl_1.id
   associate_public_ip_address = true
-  root_block_device { volume_type = "gp2", volume_size = 50 }
+  
+  root_block_device { 
+    volume_type = "gp2"
+    volume_size = 50 
+  }
+  
   vpc_security_group_ids = [aws_security_group.applicationtier_sg.id]		
   user_data = <<-EOF
   #!/bin/bash
@@ -344,7 +359,12 @@ resource "aws_instance" "app02" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.saxit_subnet_appl_2.id
   associate_public_ip_address = true
-  root_block_device { volume_type = "gp2", volume_size = 50 }
+  
+  root_block_device { 
+    volume_type = "gp2"
+    volume_size = 50 
+  }
+  
   vpc_security_group_ids = [aws_security_group.applicationtier_sg.id]				
   user_data = <<-EOF
   #!/bin/bash
