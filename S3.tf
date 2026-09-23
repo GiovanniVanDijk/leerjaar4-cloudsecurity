@@ -3,18 +3,21 @@ resource "random_id" "bucket_id" {
   byte_length = 4
 }
 
-# ✅ Week 4 - 4.2: S3 Buckets aanmaken voor de drie classificaties
+#  Week 4 - 4.2: S3 Buckets aanmaken zonder object lock conflicten
 resource "aws_s3_bucket" "saxit_openbaar" {
   bucket = "saxit-openbaar-gio-${random_id.bucket_id.hex}"
+  force_destroy = true
 }
 resource "aws_s3_bucket" "saxit_intern" {
   bucket = "saxit-intern-gio-${random_id.bucket_id.hex}"
+  force_destroy = true
 }
 resource "aws_s3_bucket" "saxit_geheim" {
   bucket = "saxit-geheim-gio-${random_id.bucket_id.hex}"
+  force_destroy = true
 }
 
-# ✅ Week 4 - 4.2: Bucket policy voor Openbaar (Dwingt encryptie en tags af)
+# ✅ Week 4 - 4.2: Bucket policy voor Openbaar
 resource "aws_s3_bucket_policy" "policy_openbaar" {
   bucket = aws_s3_bucket.saxit_openbaar.id
   policy = jsonencode({
@@ -36,7 +39,7 @@ resource "aws_s3_bucket_policy" "policy_openbaar" {
   })
 }
 
-# ✅ Week 4 - 4.2: Bucket policy voor Intern
+# Week 4 - 4.2: Bucket policy voor Intern
 resource "aws_s3_bucket_policy" "policy_intern" {
   bucket = aws_s3_bucket.saxit_intern.id
   policy = jsonencode({
@@ -58,7 +61,7 @@ resource "aws_s3_bucket_policy" "policy_intern" {
   })
 }
 
-# ✅ Week 4 - 4.2: Bucket policy voor Geheim
+# Week 4 - 4.2: Bucket policy voor Geheim
 resource "aws_s3_bucket_policy" "policy_geheim" {
   bucket = aws_s3_bucket.saxit_geheim.id
   policy = jsonencode({
